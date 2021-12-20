@@ -1,8 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { SetStateAction, useEffect, useState } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import Slider from '@react-native-community/slider'
 
-const TokenInfo = ({
+interface IProps {
+    assetAmount: number
+    tokenName: string
+    tokenAcronym: string
+    data: any
+    setPercentage: React.Dispatch<SetStateAction<number>>
+    percentage: number
+    setPercentage1: React.Dispatch<SetStateAction<number>>
+    setPercentage2: React.Dispatch<SetStateAction<number>>
+    previous1: number
+    previous2: number
+    calculate: (val: number) => void
+    getData: () => void
+}
+
+const TokenInfo: React.FunctionComponent<IProps> = ({
     assetAmount,
     tokenName,
     tokenAcronym,
@@ -15,7 +30,7 @@ const TokenInfo = ({
     previous2,
     calculate,
     getData,
-}) => {
+}: IProps) => {
     const [startValue, setStartValue] = useState(percentage)
     const apy = data[tokenAcronym]
 
@@ -34,7 +49,7 @@ const TokenInfo = ({
     }
 
     // allocates % of remaining two currencies based on user input
-    const assignPercentages = (value) => {
+    const assignPercentages = (value: number) => {
         const percentChange = (startValue - value) / 2
         const distribute1 = previous1 + percentChange
         const distribute2 = previous2 + percentChange
@@ -52,11 +67,11 @@ const TokenInfo = ({
             setPercentage1(previous1 + Math.floor(percentChange))
             setPercentage2(previous2 + Math.ceil(percentChange))
         }
-        cleanUp(value)
+        cleanUp()
     }
 
     // sets inital % for calculating the difference
-    const onStart = (value) => {
+    const onStart = (value: number) => {
         setStartValue(value)
     }
 
@@ -106,9 +121,9 @@ const TokenInfo = ({
                     minimumTrackTintColor="#FF7A7B"
                     maximumTrackTintColor="#000"
                     thumbTintColor="#FF7A7B"
-                    value={`${percentage}%`}
+                    value={`${percentage}%`} // has to be a number
                     onValueChange={(value) => {
-                        setPercentage(parseInt(value))
+                        setPercentage(Number(value)) // parseInt(value)
                     }}
                 />
 

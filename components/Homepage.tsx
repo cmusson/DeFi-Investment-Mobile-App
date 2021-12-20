@@ -3,18 +3,22 @@ import { StyleSheet, Text, TextInput, View, Image } from 'react-native'
 import getAPYData from '../services/APIService'
 import TokenInfo from './TokenInfo'
 
-const Homepage = () => {
-    const [assetAmount, setAssetAmount] = useState(0)
-    const [data, setData] = useState(0)
-    const [combinedAPY, setCombinedApy] = useState(0)
-    const [yearEndTotal, setYearEndTotal] = useState(0)
-    const [totalEarnings, setTotalEarnings] = useState(0)
-    const [daiPercentage, setDaiPercentage] = useState(100)
-    const [usdcPercentage, setUsdcPercentage] = useState(0)
-    const [usdtPercentage, setUsdtPercentage] = useState(0)
+const Homepage: React.FunctionComponent = () => {
+    const [assetAmount, setAssetAmount] = React.useState(0)
+    const [data, setData] = React.useState<any>({
+        USDC: 0,
+        USDT: 0,
+        DAI: 0,
+    })
+    const [combinedAPY, setCombinedApy] = React.useState(0)
+    const [yearEndTotal, setYearEndTotal] = React.useState(0)
+    const [totalEarnings, setTotalEarnings] = React.useState(0)
+    const [daiPercentage, setDaiPercentage] = React.useState(100)
+    const [usdcPercentage, setUsdcPercentage] = React.useState(0)
+    const [usdtPercentage, setUsdtPercentage] = React.useState(0)
 
     // gets latest APY data via API call
-    const getData = async () => {
+    const getData = async (): Promise<void> => {
         try {
             const tokenData = await getAPYData()
             setData(tokenData)
@@ -26,7 +30,7 @@ const Homepage = () => {
     }, [assetAmount])
 
     // calculates APY, Year total and Total Earned
-    const calculate = (value) => {
+    const calculate = (value: number) => {
         const dai = value * (daiPercentage / 100) * (1 + data.DAI / 100)
         const usdc = value * (usdcPercentage / 100) * (1 + data.USDC / 100)
         const usdt = value * (usdtPercentage / 100) * (1 + data.USDT / 100)
@@ -57,8 +61,8 @@ const Homepage = () => {
                         returnKeyType="done"
                         placeholder="Add asset amount here..."
                         onChangeText={(text) => {
-                            setAssetAmount(text)
-                            calculate(text)
+                            setAssetAmount(Number(text))
+                            calculate(Number(text))
                         }}
                     >
                         {assetAmount}
@@ -70,8 +74,8 @@ const Homepage = () => {
                         returnKeyType="done"
                         placeholder="Add asset amount here..."
                         onChangeText={(text) => {
-                            setAssetAmount(text)
-                            calculate(text)
+                            setAssetAmount(Number(text))
+                            calculate(Number(text))
                         }}
                     ></TextInput>
                 )}
