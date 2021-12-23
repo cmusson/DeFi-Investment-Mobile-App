@@ -99,14 +99,15 @@ const Homepage: React.FunctionComponent = function () {
   const [usdtPercentage, setUsdtPercentage] = React.useState(0);
 
   // gets latest APY data via API call
-  const getData = async (): Promise<void> => {
+  // useCallback means that the child won't rerender from this function when the parent rerenders
+  const getData = useCallback(async (): Promise<void> => {
     try {
       const tokenData = await getAPYData();
       if (tokenData) { setData(tokenData); }
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     getData();
