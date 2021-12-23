@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { StyleSheet, Text, TextInput, View, Image } from 'react-native'
 import getAPYData from '../services/APIService'
 import TokenInfo from './TokenInfo'
 
+interface TokenData {
+    USDC: number
+    USDT: number
+    DAI: number
+}
+
 const Homepage: React.FunctionComponent = () => {
     const [assetAmount, setAssetAmount] = React.useState(0)
-    const [data, setData] = React.useState<any>({
+    const [data, setData] = React.useState<TokenData | undefined>({
         USDC: 0,
         USDT: 0,
         DAI: 0,
@@ -30,17 +36,26 @@ const Homepage: React.FunctionComponent = () => {
     }, [assetAmount])
 
     // calculates APY, Year total and Total Earned
-    const calculate = (value: number) => {
-        const dai = value * (daiPercentage / 100) * (1 + data.DAI / 100)
-        const usdc = value * (usdcPercentage / 100) * (1 + data.USDC / 100)
-        const usdt = value * (usdtPercentage / 100) * (1 + data.USDT / 100)
-        const yET = dai + usdc + usdt
-        const tEarnings = yET - value
-        const cAPY = ((yET - value) / value) * 100
-        setCombinedApy(cAPY)
-        setYearEndTotal(yET)
-        setTotalEarnings(tEarnings)
-    }
+    // useCallback means calculate will only run when the dependencies update
+    // function is not recreated with every page rerender
+    const calculate = useCallback(
+        (value: number) => {
+            if (data) {
+                const dai = value * (daiPercentage / 100) * (1 + data.DAI / 100)
+                const usdc =
+                    value * (usdcPercentage / 100) * (1 + data.USDC / 100)
+                const usdt =
+                    value * (usdtPercentage / 100) * (1 + data.USDT / 100)
+                const yET = dai + usdc + usdt
+                const tEarnings = yET - value
+                const cAPY = ((yET - value) / value) * 100
+                setCombinedApy(cAPY)
+                setYearEndTotal(yET)
+                setTotalEarnings(tEarnings)
+            }
+        },
+        [daiPercentage, usdcPercentage, usdtPercentage]
+    )
 
     return (
         <View style={styles.container}>

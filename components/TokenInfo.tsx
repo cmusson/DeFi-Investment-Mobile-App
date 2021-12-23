@@ -1,6 +1,8 @@
 import React, { SetStateAction, useEffect, useState } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import Slider from '@react-native-community/slider'
+import { SvgXml } from 'react-native-svg'
+import { daiIcon, usdcIcon, usdtIcon } from '../icons/icons'
 
 interface IProps {
     assetAmount: number
@@ -80,20 +82,11 @@ const TokenInfo: React.FunctionComponent<IProps> = ({
             <View style={styles.tokenInfo}>
                 <View>
                     {tokenAcronym == 'DAI' ? (
-                        <Image
-                            style={styles.img}
-                            source={require('../icons/DAI.png')}
-                        />
+                        <SvgXml style={styles.img} xml={daiIcon} />
                     ) : tokenAcronym == 'USDC' ? (
-                        <Image
-                            style={styles.img}
-                            source={require('../icons/USDC.png')}
-                        />
+                        <SvgXml style={styles.img} xml={usdcIcon} />
                     ) : (
-                        <Image
-                            style={styles.img}
-                            source={require('../icons/USDT.png')}
-                        />
+                        <SvgXml style={styles.img} xml={usdtIcon} />
                     )}
                 </View>
 
@@ -121,7 +114,7 @@ const TokenInfo: React.FunctionComponent<IProps> = ({
                     minimumTrackTintColor="#FF7A7B"
                     maximumTrackTintColor="#000"
                     thumbTintColor="#FF7A7B"
-                    value={`${percentage}%`} // has to be a number
+                    value={percentage} // has to be a number
                     onValueChange={(value) => {
                         setPercentage(Number(value)) // parseInt(value)
                     }}
