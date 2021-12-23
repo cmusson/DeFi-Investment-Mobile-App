@@ -1,5 +1,5 @@
 import React, { SetStateAction, useEffect, useState } from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import Slider from '@react-native-community/slider'
 import { SvgXml } from 'react-native-svg'
 import { daiIcon, usdcIcon, usdtIcon } from '../icons/icons'

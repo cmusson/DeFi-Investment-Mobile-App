@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 40,
+        marginTop: 30,
     },
     img: {
         flex: 1,
